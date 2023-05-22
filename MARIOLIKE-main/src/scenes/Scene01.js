@@ -29,11 +29,17 @@ export class Scene01 extends Phaser.Scene {
 
     
     create(){
+
+
+
+
+
         this.platforms;
         this.player;
         this.xspeed = 250;
-        this.yspeed = 370;
+        this.yspeed = 900;
         this.slowMotion = false
+        this.click = false;
 
         var mx = this.input.mousePointer.x;
         var my = this.input.mousePointer.y;
@@ -82,7 +88,9 @@ export class Scene01 extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
 
 
-        
+        this.input.on('pointerdown', () => {this.click = true;});
+        this.input.on('pointerup', () => {this.click = false;});
+
             
 
 
@@ -95,7 +103,7 @@ export class Scene01 extends Phaser.Scene {
     
     update(){
     
-        
+  
     
         if (this.cursors.left.isDown){ //si la touche gauche est appuyée
             this.player.setVelocityX(-this.xspeed); //alors vitesse négative en X
@@ -135,12 +143,34 @@ export class Scene01 extends Phaser.Scene {
             const mx = this.input.mousePointer.x;
             const my = this.input.mousePointer.y;
 
-            this.cubeGroup.add(new Cube(this, mx, my));
-            
-            if (this.timer >= 100){
-                this.slowMotion = false;
-                this.timer = 0;
+            if (this.click ){
+                this.cubeGroup.add(new Cube(this, mx, my));
+                if (this.timer >= 100){
+                    this.slowMotion = false;
+                    this.timer = 0;
+                }
+
             }
+
+            /*if (this.input.on('pointerdown',(this.pointer))) {
+                this.cubeGroup.add(new Cube(this, mx, my));
+            
+                if (this.timer >= 100){
+                    this.slowMotion = false;
+                    this.timer = 0;
+                }
+            }*/
+
+            /*if(this.pointer.isDown == true){
+                this.cubeGroup.add(new Cube(this, mx, my));
+            
+                if (this.timer >= 100){
+                    this.slowMotion = false;
+                    this.timer = 0;
+                }
+
+            }*/
+
         }
 
         else {
@@ -149,15 +179,22 @@ export class Scene01 extends Phaser.Scene {
             this.yspeed= 370
             
         }
+
+
+        
     }
 
+    createCube(mx,my){
+        this.cubeGroup.add(new Cube(this, mx, my));
+            
+                if (this.timer >= 100){
+                    this.slowMotion = false;
+                    this.timer = 0;
+                }
+
+    }
+
+    
+      
 }
 
-this.input.on('pointerdown', function (pointer)
-        {
-
-            console.log('down');
-
-            this.add.image(pointer.x, pointer.y, 'logo');
-
-        }, this);
